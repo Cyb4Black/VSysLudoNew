@@ -3,6 +3,7 @@ package strategy;
 import java.util.List;
 
 import ludo.AbstractAction;
+import ludo.Field;
 import ludo.MoveAction;
 import ludo.AbstractStrategy;
 import ludo.Token;
@@ -14,9 +15,9 @@ public class CarefullyMoveLeadingToken extends AbstractStrategy{
 	public int chooseAction(List<Token> tokens, int turn, int die,
 			List<AbstractAction> actions) {
 		if(actions.size() == 1) return 0;
-		int ret = -1;
+		int ret = -9999;
 		ret = chooseEndangered(tokens, die, actions);
-		if(ret != -1){
+		if(ret != -9999){
 			return ret;
 		}
 		
@@ -25,19 +26,58 @@ public class CarefullyMoveLeadingToken extends AbstractStrategy{
 	}
 	
 	public int chooseEndangered(List<Token> tokens, int die, List<AbstractAction> actions){
-		int ret = -1;
+		int ret = -9999;
 		for(AbstractAction ac : actions){
+			MoveAction mAc = (MoveAction)ac;
+			int dScoreSrc = getDangerScore(tokens, mAc.token().field(), mAc);
+			int dScoreTarget = getDangerScore(tokens, mAc.destination(), mAc);
 			
+			if(dScoreSrc == -1 && dScoreTarget == -1){
+				ret = -9999;
+			}else if(dScoreTarget <= dScoreSrc){
+				ret 
+			}
 		}
-		return 0;
+		return ret;
 	}
 	
-	private int getDangerScore(List<Token> tokens, int die, MoveAction action){
+	private int getDangerScore(List<Token> tokens, Field f, MoveAction action){
+		final int enemy = 10;
+		final int home = -100;
+		final int position = action.token().field().position();
+		final int playersCount = tokens.size() / 4;
+		final int fieldsCount = playersCount * 12;
+		boolean noEnemy = true;
 		
+		int score = 0;
+		int i;
 		
+		score += position;
 		
-		return 0;
+		if(movesHome(action))score += home;
+		
+		if(position - 5 < 0){
+			i = fieldsCount - 5 + position;
+		}else{
+			i = position - 5;
+		}
+		for(Token t : tokens){
+			if(t.index() != action.token().index() && t.field().inTrackArea() && t.field().position() >= i && t.field().position() <= (position + 5) && !(f.position() == t.field().position())){
+				score += enemy;
+				noEnemy = false;
+			}
+		}
+		if(noEnemy){
+			return -1;
+		}else{
+			return score;
+		}
 	}
+	
+	private boolean movesHome(MoveAction action){
+		return action.destination().inHomeArea();
+	}
+	
 	
 	public int chooseLeading(List<AbstractAction> actions){
 		int ret = 0;
