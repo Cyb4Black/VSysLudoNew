@@ -8,7 +8,7 @@ import ludo.AbstractStrategy;
 import ludo.Token;
 
 
-public class CarefullyMoveLeadingTokenNew extends AbstractStrategy{
+public class CarefullyMoveLeadingToken extends AbstractStrategy{
 
 	@Override
 	public int chooseAction(List<Token> tokens, int turn, int die,
@@ -27,8 +27,15 @@ public class CarefullyMoveLeadingTokenNew extends AbstractStrategy{
 	public int chooseEndangered(List<Token> tokens, int die, List<AbstractAction> actions){
 		int ret = -1;
 		for(AbstractAction ac : actions){
-			for(int i : ((MoveAction)ac).token().field().)
+			
 		}
+		return 0;
+	}
+	
+	private int getDangerScore(List<Token> tokens, int die, MoveAction action){
+		
+		
+		
 		return 0;
 	}
 	
