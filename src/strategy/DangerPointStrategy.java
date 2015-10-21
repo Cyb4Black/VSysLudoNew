@@ -9,7 +9,7 @@ import ludo.AbstractStrategy;
 import ludo.Token;
 
 
-public class CarefullyMoveLeadingToken extends AbstractStrategy{
+public class DangerPointStrategy extends AbstractStrategy{
 
 	@Override
 	public int chooseAction(List<Token> tokens, int turn, int die,
@@ -19,10 +19,9 @@ public class CarefullyMoveLeadingToken extends AbstractStrategy{
 		ret = chooseEndangered(tokens, die, actions);
 		if(ret != -9999){
 			return ret;
+		}else{
+			return chooseLeading(actions);
 		}
-		
-		
-		return ret;
 	}
 	
 	public int chooseEndangered(List<Token> tokens, int die, List<AbstractAction> actions){
@@ -34,8 +33,10 @@ public class CarefullyMoveLeadingToken extends AbstractStrategy{
 			
 			if(dScoreSrc == -1 && dScoreTarget == -1){
 				ret = -9999;
-			}else if(dScoreTarget <= dScoreSrc){
-				ret 
+			}else if(dScoreTarget <= dScoreSrc && dScoreTarget <= ret){
+				ret = dScoreTarget;
+			}else if(dScoreTarget > dScoreSrc && dScoreTarget <= ret){
+				ret = dScoreSrc;
 			}
 		}
 		return ret;
