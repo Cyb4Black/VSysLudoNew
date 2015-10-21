@@ -44,7 +44,7 @@ public class DangerPointStrategy extends AbstractStrategy{
 	
 	private int getDangerScore(List<Token> tokens, Field f, MoveAction action){
 		final int enemy = 10;
-		final int home = -100;
+		final int home = -1000;
 		final int position = action.token().field().position();
 		final int playersCount = tokens.size() / 4;
 		final int fieldsCount = playersCount * 12;
@@ -66,6 +66,9 @@ public class DangerPointStrategy extends AbstractStrategy{
 			if(t.index() != action.token().index() && t.field().inTrackArea() && t.field().position() >= i && t.field().position() <= (position + 5) && !(f.position() == t.field().position())){
 				score += enemy;
 				noEnemy = false;
+			}
+			if(t.index() != action.token().index() && t.field().position() == action.destination().position()){
+				score += -100;
 			}
 		}
 		if(noEnemy){

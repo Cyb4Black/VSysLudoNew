@@ -14,26 +14,27 @@ public class MoveLeadingToken extends AbstractStrategy{
 	public int chooseAction(List<Token> tokens, int turn, int die,
 			List<AbstractAction> actions) {
 		int ret = 0;
-		int targetFlag = -1;
+		int homeFlag = -1;
 		if(actions.size() > 1){
 			for(AbstractAction ac : actions){
 				if(((MoveAction)ac).token().field().position() >= ((MoveAction)actions.get(ret)).token().field().position()){
 					ret = actions.indexOf(ac);
-					if(((MoveAction)ac).token().field().inHomeArea()){
+					if(((MoveAction)ac).token().field().inHomeArea()){//wenn Token in HomeArea
 						//targetFlag = actions.indexOf(ac);
-						if(targetFlag > -1){
+						if(homeFlag > -1){//wenn HomeFlag gesetzt
 							if(((MoveAction)ac).token().field().position() >= ((MoveAction)actions.get(ret)).token().field().position()){
-								
+								//wenn aktueller Token weiter als bisheriger in HomeArea
+								homeFlag = actions.indexOf(ac);
 							}
-						}else{
-							targetFlag = actions.indexOf(ac);
+						}else{//wenn HomeFlag nicht gesetzt
+							homeFlag = actions.indexOf(ac);
 						}
 					}
 				}
 			}
 		}
-		if(targetFlag >= 0){
-			return targetFlag;
+		if(homeFlag >= 0){
+			return homeFlag;
 		}else{
 			return ret;
 		}
