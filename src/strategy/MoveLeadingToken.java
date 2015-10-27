@@ -13,6 +13,10 @@ public class MoveLeadingToken extends ChooserCollection{
 			List<AbstractAction> actions) {
 		if(actions.size() == 1){
 			return 0;
+		}
+		int ret = chooseHomeComing(actions);
+		if(ret != -9999){
+			return ret;
 		}else{
 			return chooseLeading(actions);
 		}

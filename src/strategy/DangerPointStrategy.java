@@ -18,6 +18,15 @@ public class DangerPointStrategy extends ChooserCollection{
 		if(ret != -9999){
 			return ret;
 		}
+		ret = chooseShortcutBash(tokens, actions, die);
+		if(ret != -9999){
+			return ret;
+		}
+		
+		ret = chooseBash(tokens, actions);
+		if(ret != -9999){
+			return ret;
+		}
 		ret = chooseEndangered(tokens, die, actions);
 		if(ret != -9999){
 			return ret;
