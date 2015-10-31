@@ -5,8 +5,8 @@ import java.util.List;
 import ludo.AbstractAction;
 import ludo.Token;
 
-public class DangerPointStrategy extends ChooserCollection {
-	
+public class MoveLeadingTokenWS extends ChooserCollection {
+
 	@Override
 	public int chooseAction(List<Token> tokens, int turn, int die,
 			List<AbstractAction> actions) {
@@ -14,22 +14,14 @@ public class DangerPointStrategy extends ChooserCollection {
 			noChoice++;
 			return 0;
 		}
-
-		int ret = -9999;
-		ret = chooseHomeComing(actions);
-		if (ret != -9999) {
-			homeCounter++;
-			return ret;
-		}
-		ret = chooseShortcutBash(tokens, actions, die);
+		int ret = chooseShortcutBash(tokens, actions, die);
 		if (ret != -9999) {
 			shortCounter++;
 			return ret;
 		}
-
-		ret = chooseEndangered(tokens, die, actions);
+		ret = chooseHomeComing(actions);
 		if (ret != -9999) {
-			dangerCounter++;
+			homeCounter++;
 			return ret;
 		}
 		leadingCounter++;

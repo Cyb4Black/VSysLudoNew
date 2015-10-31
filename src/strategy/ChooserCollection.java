@@ -7,11 +7,20 @@ import ludo.AbstractAction;
 import ludo.AbstractStrategy;
 import ludo.Field;
 import ludo.MoveAction;
+import ludo.PlayerStats;
 import ludo.Token;
 
 import java.util.Random;
 
 public abstract class ChooserCollection extends AbstractStrategy {
+	int bashCounter = 0;
+	int homeCounter = 0;
+	int leadingCounter = 0;
+	int noChoice = 0;
+	int shortCounter = 0;
+	int dangerCounter = 0;
+	String myClass = this.getClass().getSimpleName();
+
 
 	public int chooseRandom(List<AbstractAction> actions) {
 		Random rand = new Random();
@@ -40,12 +49,14 @@ public abstract class ChooserCollection extends AbstractStrategy {
 
 	public int chooseHomeComing(List<AbstractAction> actions) {
 		int ret = -9999;
+		int retPos = 0;
 
 		for (AbstractAction ac : actions) {
 			if (((MoveAction) ac).destination().inHomeArea()
-					&& ((MoveAction) ac).token().field().position() >= ret) {
+					&& ((MoveAction) ac).token().field().position() >= retPos) {
 				//System.out.println("PositionID HomeComing: " + ((MoveAction)ac).token().field().position());
 				ret = actions.indexOf(ac);
+				retPos = ((MoveAction) ac).token().field().position();
 			}
 		}
 
@@ -60,7 +71,9 @@ public abstract class ChooserCollection extends AbstractStrategy {
 			MoveAction mAc = (MoveAction)ac;
 			int myPos = mAc.token().field().position();
 			int targetPos = mAc.destination().position();
-			if(myPos < 6 && targetPos > (playersCount * 12)-die){
+			if(myPos - die < 0 
+					&& targetPos > (playersCount * 12) - 7 
+					&& mAc.token().field().inTrackArea()){
 				ret = actions.indexOf(ac);
 			}
 		}
@@ -76,8 +89,9 @@ public abstract class ChooserCollection extends AbstractStrategy {
 			for (Token t : tokens) {
 				if (t.index() != mAc.token().index()
 						&& t.field().position() == mAc.destination().position()
-						&& mAc.destination().position() >= targetPos) {
+						&& mAc.destination().position() >= targetPos && (mAc.destination().position() - mAc.token().field().position()) >= -2) {
 					ret = actions.indexOf(ac);
+					targetPos = mAc.destination().position();
 				}
 			}
 		}
@@ -144,6 +158,21 @@ public abstract class ChooserCollection extends AbstractStrategy {
 		} else {
 			return score;
 		}
+	}
+	
+	public void onGameOver(List<PlayerStats> stats, int roundCount){
+		if((bashCounter + homeCounter + leadingCounter + shortCounter + noChoice + dangerCounter) == 0)return;
+		
+		System.out.print(myClass+ "; ");
+		System.out.print(bashCounter + "; ");
+		System.out.print(homeCounter + "; ");
+		System.out.print(leadingCounter + "; ");
+		System.out.print(shortCounter + "; ");
+		System.out.print(dangerCounter + "; ");
+		System.out.print(noChoice + "; ");
+		System.out.println((bashCounter + homeCounter + leadingCounter + shortCounter + noChoice + dangerCounter) + "; ");
+		//System.out.println("\n------------------\n");
+		
 	}
 
 	/*private boolean movesHome(MoveAction action) {
