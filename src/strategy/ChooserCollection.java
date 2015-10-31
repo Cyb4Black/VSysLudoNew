@@ -1,5 +1,6 @@
 package strategy;
 
+
 import java.util.List;
 
 import ludo.AbstractAction;
@@ -35,7 +36,6 @@ public abstract class ChooserCollection extends AbstractStrategy {
 		}else{
 			return ret;
 		}
-
 	}
 
 	public int chooseHomeComing(List<AbstractAction> actions) {
@@ -60,7 +60,7 @@ public abstract class ChooserCollection extends AbstractStrategy {
 			MoveAction mAc = (MoveAction)ac;
 			int myPos = mAc.token().field().position();
 			int targetPos = mAc.destination().position();
-			if(myPos < 6 && targetPos < (playersCount * 12)){
+			if(myPos < 6 && targetPos > (playersCount * 12)-die){
 				ret = actions.indexOf(ac);
 			}
 		}
@@ -88,25 +88,26 @@ public abstract class ChooserCollection extends AbstractStrategy {
 	public int chooseEndangered(List<Token> tokens, int die,
 			List<AbstractAction> actions) {
 		int ret = -9999;
+		int retScore = 9999;
 		for (AbstractAction ac : actions) {
 			MoveAction mAc = (MoveAction) ac;
 			int dScoreSrc = getDangerScore(tokens, mAc.token().field(), mAc);
 			int dScoreTarget = getDangerScore(tokens, mAc.destination(), mAc);
-
 			if (dScoreSrc == -1 && dScoreTarget == -1) {
 				ret = -9999;
-			} else if (dScoreTarget <= dScoreSrc && dScoreTarget <= ret) {
-				ret = dScoreTarget;
-			} else if (dScoreTarget > dScoreSrc && dScoreTarget <= ret) {
-				ret = dScoreSrc;
-			}
+			} else if (dScoreTarget <= dScoreSrc && dScoreTarget <= retScore) {
+				ret = actions.indexOf(ac);
+				retScore = dScoreTarget;
+			} /*else if (dScoreTarget > dScoreSrc && retScore != 9999) {
+				ret = -9999;
+			}*/
 		}
 		return ret;
 	}
 
 	private int getDangerScore(List<Token> tokens, Field f, MoveAction action) {
 		final int enemy = 10;
-		final int home = -1000;
+		//final int home = -1000;
 		final int position = action.token().field().position();
 		final int playersCount = tokens.size() / 4;
 		final int fieldsCount = playersCount * 12;

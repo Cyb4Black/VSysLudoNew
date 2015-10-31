@@ -7,9 +7,9 @@ import ludo.AbstractStrategy;
 public class MainNew {
 
 	public static void main(String[] args) {
-		AbstractStrategy red = new DangerPointStrategy(); // Replace with your implementation
-		AbstractStrategy blue = new MyRandom(); // Replace with your implementation
-		AbstractStrategy green = new MyRandom(); // Replace with your implementation
+		AbstractStrategy red = new BasherStrategy(); // Replace with your implementation
+		AbstractStrategy blue = new MoveLeadingToken(); // Replace with your implementation
+		AbstractStrategy green = new DangerPointStrategy(); // Replace with your implementation
 		AbstractStrategy orange = new MyRandom(); // Replace with your implementation
 		AbstractStrategy brown = new MyRandom(); // Replace with your implementation
 		AbstractStrategy violet = new MyRandom(); // Replace with your implementation
