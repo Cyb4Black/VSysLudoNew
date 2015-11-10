@@ -5,6 +5,12 @@ import java.util.List;
 import ludo.AbstractAction;
 import ludo.Token;
 
+/**
+ * Class containing chooseAction with the order of chooseMethods
+ * 
+ * @author Hex-3-En
+ * @version 1.0
+ */
 public class BasherStrategy extends ChooserCollection {
 
 	@Override
